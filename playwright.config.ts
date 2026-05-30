@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
-
+import dotenv from 'dotenv';
+import path from 'path';
 declare const process: { env: { CI?: string } };
 
 /**
@@ -8,7 +9,7 @@ declare const process: { env: { CI?: string } };
  */
 // import dotenv from 'dotenv';
 // import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -24,25 +25,46 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+    reporter: [
+    ['html', { 
+      open: 'always',
+      title: 'YogeshAutomationReport'
+    }]
+  ],
+  
+ //reporter : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
-
+    baseURL :'https://the-internet.herokuapp.com/',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot :'on'
+
   },
 
   /* Configure projects for major browsers */
   projects: [
+    { 
+      name: 'setup',
+      testMatch: 'globalFixtures/global.setup.ts',
+      teardown :'teardown'
+    },
+     {
+      name: 'teardown',
+      testMatch: 'globalFixtures/global.teardown.ts'
+      
+    },
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'],
         channel : 'chrome',
-        headless : false
+        headless : false,
        },
-    }
+       dependencies: ['setup']
+    },
+   
     // ,
 
     // {
