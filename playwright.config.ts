@@ -17,7 +17,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -28,16 +28,21 @@ export default defineConfig({
     reporter: [
     ['html', { 
       open: 'always',
-      title: 'YogeshAutomationReport'
+      title: 'YogeshAutomationReports'
     }]
   ],
+
+  timeout : 30*1000,
+  expect: {
+    timeout :30*1000,
+  },
   
  //reporter : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
-    baseURL :'https://the-internet.herokuapp.com/',
+   // baseURL :'https://the-internet.herokuapp.com/',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     screenshot :'on'
@@ -46,23 +51,27 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    { 
-      name: 'setup',
-      testMatch: 'globalFixtures/global.setup.ts',
-      teardown :'teardown'
-    },
-     {
-      name: 'teardown',
-      testMatch: 'globalFixtures/global.teardown.ts'
+    // { 
+    //   name: 'setup',
+    //   testMatch: 'globalFixtures/global.setup.ts',
+    //   teardown :'teardown'
+    // },
+    //  {
+    //   name: 'teardown',
+    //   testMatch: 'globalFixtures/global.teardown.ts'
       
-    },
+    // },
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'],
         channel : 'chrome',
         headless : false,
+        launchOptions :{
+      args: ['--start-maximized']
+      
+     },
        },
-       dependencies: ['setup']
+      // dependencies: ['setup']
     },
    
     // ,
