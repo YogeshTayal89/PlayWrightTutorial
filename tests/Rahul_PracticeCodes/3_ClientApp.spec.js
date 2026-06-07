@@ -2,12 +2,12 @@ import {test, expect  } from "@playwright/test";
 
 test('@Webst Client App login', async ({ page }) => {
    //js file- Login js, DashboardPage
-   const email = "anshika@gmail.com";
+   const email = "email.yogesh@gmail.com";
    const productName = 'ZARA COAT 3';
    const products = page.locator(".card-body");
    await page.goto("https://rahulshettyacademy.com/client");
    await page.locator("#userEmail").fill(email);
-   await page.locator("#userPassword").fill("Iamking@000");
+   await page.locator("#userPassword").fill("Oasis@360");
    await page.locator("[value='Login']").click();
    await page.waitForLoadState('networkidle');
    await page.locator(".card-body b").first().waitFor();
@@ -64,3 +64,63 @@ test('@Webst Client App login', async ({ page }) => {
    expect(orderId.includes(orderIdDetails)).toBeTruthy();
  
 });
+
+ 
+test('@Webst Client App login with latest locators + filter logic', async ({ page }) => {
+   //js file- Login js, DashboardPage
+   const email = "email.yogesh@gmail.com";
+   const productName = 'ZARA COAT 3';
+   const products = page.locator(".card-body");
+   await page.goto("https://rahulshettyacademy.com/client");
+   await page.getByPlaceholder("email@example.com").fill(email);
+   await page.getByPlaceholder("enter your passsword").fill("Oasis@360");
+   await page.getByRole('button',{name:"Login"}).click();
+   await page.waitForLoadState('networkidle');
+   await page.locator(".card-body b").first().waitFor();
+   
+   await page.locator(".card-body").filter({hasText:"ZARA COAT 3"})
+   .getByRole("button",{name:"Add to Cart"}).click();
+ 
+   await page.getByRole("listitem").getByRole('button',{name:"Cart"}).click();
+ 
+   //await page.pause();
+   await page.locator("div li").first().waitFor();
+   await expect(page.getByText("ZARA COAT 3")).toBeVisible();
+ 
+   await page.getByRole("button",{name :"Checkout"}).click();
+ 
+   await page.getByPlaceholder("Select Country").pressSequentially("ind");
+ 
+   await page.getByRole("button",{name :"India"}).nth(1).click();
+   await page.getByText("PLACE ORDER").click();
+ 
+   await expect(page.getByText("Thankyou for the order.")).toBeVisible();
+})
+
+
+ 
+test("Calendar validations",async({page})=>
+{
+ 
+    const monthNumber = "6";
+    const date = "15";
+    const year = "2027";
+    const expectedList = [monthNumber,date,year];
+    
+    await page.goto("https://rahulshettyacademy.com/seleniumPractise/#/offers");
+    await page.locator(".react-date-picker__inputGroup").click();
+    await page.locator(".react-calendar__navigation__label").click();
+    await page.locator(".react-calendar__navigation__label").click();
+    await page.getByText(year).click();
+    await page.locator(".react-calendar__year-view__months__month").nth(Number(monthNumber)-1).click();
+    await page.locator("//abbr[text()='"+date+"']").click();
+ 
+    const inputs =  page.locator('.react-date-picker__inputGroup__input')
+ 
+    for(let i =0; i<expectedList.length;i++)
+    {
+        const value = await inputs.nth(i).inputValue();
+        expect(value).toEqual(expectedList[i]);
+ 
+    }
+})
