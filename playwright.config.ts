@@ -32,6 +32,7 @@ export default defineConfig({
     }]
   ],
 
+  //reporter: "allure-playwright",
   timeout : 30*1000,
   expect: {
     timeout :30*1000,

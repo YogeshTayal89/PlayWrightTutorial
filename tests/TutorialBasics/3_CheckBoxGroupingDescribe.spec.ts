@@ -32,3 +32,7 @@ test('Validate the second checkbox', async ({page}) => {
 
 
 // To run - npx playwright -g'checkbox module'
+
+// test.describe.configure(//{mode :'parallel'}) // test in single file will run in parallel mode
+// test.describe.configure(//{mode :'serial'}) // test in single file will run in serial mode, in case test2 is dependent on test1 and 
+// if test1 gets fail other will be skipped
