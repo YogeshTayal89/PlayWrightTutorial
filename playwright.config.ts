@@ -62,19 +62,31 @@ export default defineConfig({
     //   testMatch: 'globalFixtures/global.teardown.ts'
       
     // },
-    {
-      name: 'chromium',
-      use: { 
-        channel : 'chrome',
-        headless : false,
-        viewport: null,
-        launchOptions :{
-      args: ['--start-maximized']
-      
-     },
-       },
-      // dependencies: ['setup']
+{
+    name: 'chromium',
+    use: {
+      browserName: 'chromium',
+      headless: true,
+      viewport: { width: 1920, height: 1080 },
+      launchOptions: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
     },
+  },
+
+    // {
+    //   name: 'chromium',
+    //   use: { 
+    //     channel : 'chrome',
+    //     headless : false,
+    //     viewport: null,
+    //     launchOptions :{
+    //   args: ['--start-maximized']
+      
+    //  },
+    //    },
+    //   // dependencies: ['setup']
+    // },
    
     // ,
 
