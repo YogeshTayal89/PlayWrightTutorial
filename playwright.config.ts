@@ -66,7 +66,7 @@ export default defineConfig({
     name: 'chromium',
     use: {
       browserName: 'chromium',
-      headless: true,
+      headless: false,
       viewport: { width: 1920, height: 1080 },
       launchOptions: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
